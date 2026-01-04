@@ -1,0 +1,969 @@
+﻿@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('../fonts/open-dyslexic/otf/OpenDyslexic-Regular.otf') format('opentype');
+    src: url('../fonts/open-dyslexic/woff/OpenDyslexic-Regular.woff') format('woff'), url('../fonts/open-dyslexic/ttf/OpenDyslexic-Regular.ttf') format('truetype'), url('../fonts/open-dyslexic/svg/OpenDyslexic-Regular.svg#opendyslexicregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+:root {
+    --accessibility-bg-color: inherit;
+    --accessibility-text-color: inherit;
+    --accessibility-title-color: inherit;
+}
+a.skip-main {
+    clip: rect(1px,1px,1px,1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+a.skip-main:focus,
+a.skip-main:active {
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    box-shadow: 0 0 2px 2px rgba(0,0,0,.6);
+    clip: auto !important;
+    color: #2A5992;
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    height: auto;
+    left: 5px;
+    line-height: normal;
+    padding: 15px 23px 14px;
+    text-decoration: none;
+    top: 5px;
+    width: auto;
+    z-index: 2147483647 !important;
+}
+.herobtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 4px 8px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #0073e6;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.herobtn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+.accessibility-bg-color {
+    background-color: var(--accessibility-bg-color) !important;
+}
+.accessibility-bg-color,
+.accessibility-bg-color.bg-dark,
+.accessibility-bg-color.bg-light,
+.accessibility-bg-color.bg-primary,
+.accessibility-bg-color .container,
+.accessibility-bg-color nav,
+.accessibility-bg-color footer,
+.accessibility-bg-color .navbar,
+.accessibility-bg-color .dropdown-menu,
+.accessibility-bg-color .btn:not(#accessPanel .btn),
+.accessibility-bg-color .badge {
+    background-color: var(--accessibility-bg-color) !important;
+}
+.accessibility-text-color *:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6):not(#accessOverlay):not(#accessPanel):not(#accessPanel *):not(img):not(svg):not(video):not(canvas):not(iframe):not(object):not(embed) {
+    color: var(--accessibility-text-color) !important;
+}
+.accessibility-title-color h1,
+.accessibility-title-color h2,
+.accessibility-title-color h3,
+.accessibility-title-color h4,
+.accessibility-title-color h5,
+.accessibility-title-color h6 {
+    color: var(--accessibility-title-color) !important;
+}
+/* Floating Button */
+.access-trigger {
+    position: fixed;
+    bottom: 10px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    background-color: #0d6efd;
+    border: none;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1050;
+    transition: opacity 0.3s ease;
+}
+.access-trigger.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+.access-trigger:focus {
+    outline: 3px solid #639af9;
+    outline-offset: 3px;
+}
+.access-trigger svg {
+    width: 30px;
+    height: 30px;
+    fill: #fff;
+}
+.access-trigger .active-actions-icon {
+    display: block;
+}
+.active-actions-icon {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: -5px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: solid 2px #639af9;
+    color: #fff;
+    background-color: #fff;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.access-trigger .active-actions-icon svg {
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    color: #639af9;
+    fill: #639af9;
+    max-width: 65%;
+    max-height: 65%;
+    overflow: visible;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    visibility: visible;
+    opacity: 1;
+}
+.active-actions-icon:not([hidden]) {
+    opacity: 1;
+}
+/* Custom Panel (replacing Bootstrap Offcanvas) */
+.access-panel {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 360px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
+    transition: right 0.3s ease;
+    z-index: 1060;
+    overflow-y: auto;
+    display: none;
+}
+.access-panel.show {
+    display: block;
+    right: 15px;
+}
+.access-panel hr {
+    margin: 1rem 0;
+}
+.access-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+.access-panel-body {
+    padding: 1rem;
+}
+.access-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    z-index: 1055;
+    display: none;
+}
+.access-overlay.show {
+    display: block;
+}
+.action-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+.action-box {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    user-select: none;
+}
+.action-box.active {
+    border-color: #0d6efd;
+    background-color: #e7f1ff;
+}
+.action-box.full-width {
+    grid-column: 1 / -1;
+    cursor: auto;
+}
+.content__icon svg {
+    height: 21px;
+    margin-bottom: 20px;
+}
+.action-box-htalkbtn .content__icon svg {
+    height: 32px;
+    margin-bottom: 9px;
+}
+.content__title {
+    font-size: 14px;
+}
+/* Color Picker Styles */
+.color-picker {
+    margin-top: 5px;
+}
+.color-picker__selection {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    display: inline-block;
+    margin: 0 1px;
+    position: relative;
+}
+.color-picker__selection:focus {
+    outline: 3px solid #0d6efd;
+    outline-offset: 2px;
+}
+.color-picker__selection::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.15s ease;
+    pointer-events: none;
+}
+.color-picker__selection.active::before {
+    opacity: 1;
+}
+.color-picker__cancel {
+    display: block;
+    font-size: 13px;
+    margin: 5px auto 0;
+    appearance: none;
+    border: none;
+    background: transparent;
+    padding: 0;
+    line-height: 1;
+    cursor: pointer;
+    text-align: center;
+    user-select: none;
+}
+.color-picker__cancel:hover {
+    text-decoration: underline;
+}
+/* Text Magnifier */
+.text-magnifier-tooltip {
+    position: fixed;
+    line-height: 1.2;
+    padding: 8px 17px;
+    font-family: Arial, Helvetica, sans-serif;
+    max-width: 500px;
+    font-size: 28px;
+    border-radius: 5px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+    user-select: none;
+    z-index: 9999;
+    transition: all 0s ease !important;
+}
+/* Highlight Titles */
+body.highlight-titles h1,
+body.highlight-titles h2,
+body.highlight-titles h3,
+body.highlight-titles h4,
+body.highlight-titles h5,
+body.highlight-titles h6,
+body.highlight-titles [role="heading"] {
+    outline: 2px solid #146ff8 !important;
+    outline-offset: 2px !important;
+}
+/* Highlight Titles */
+body.highlight-links a:not(#accessPanel *),
+body.highlight-links .btn:not(#accessPanel *) {
+    outline: rgba(255, 114, 22, 0.5) solid 2px !important;
+    outline-offset: 1px !important;
+}
+/* Readable font style */
+html.readable-font,
+html.readable-font * {
+    font-family: 'Arial', 'Verdana', sans-serif !important;
+}
+/* Exclude #accessPanel and all its descendants */
+html.readable-font #accessPanel,
+html.readable-font #accessPanel * {
+    font-family: initial !important;
+}
+/* Dyslexia Friendly font style */
+html.dyslexia-friendly,
+html.dyslexia-friendly * {
+    font-family: 'OpenDyslexic', sans-serif !important;
+}
+/* Exclude #accessPanel and all its descendants */
+html.dyslexia-friendly #accessPanel,
+html.dyslexia-friendly #accessPanel * {
+    font-family: initial !important;
+}
+.action-group .action-box:not([role=switch]) .action__custom-element {
+    width: 100%;
+    margin-top : 15px;
+}
+.action-group .action-box:not([role=switch]) .action__custom-element .range {
+    position: relative;
+    width: 90%;
+    max-width: 200px;
+    margin: auto;
+}
+.range [class$=-button] {
+    position: absolute;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 33px;
+    height: 33px;
+    top: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    line-height: 1;
+    z-index: 2;
+    background-color: #146ff8;
+    transition: all .15s ease;
+    color: #fff;
+    border: 0;
+}
+.range__base {
+    color: #146ff8;
+    position: relative;
+    width: 100%;
+    height: 35px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 2.6;
+    direction: ltr;
+    background-color: #fff;
+}
+.range__plus-button {
+    right: -15px;
+}
+.range__minus-button {
+    left: -15px;
+}
+.range [class$=-button] .icon {
+    height: 9px;
+}
+.action-box-zoom .action__content,
+.action-box-fontSize .action__content,
+.action-box-lineHeight .action__content,
+.action-box-letterSpacing .action__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.action-box-zoom .action__content .content__icon svg,
+.action-box-fontSize .action__content .content__icon svg,
+.action-box-lineHeight .action__content .content__icon svg,
+.action-box-letterSpacing .action__content .content__icon svg {
+    height: 21px;
+    margin-bottom: 0px;
+    margin-right: 10px;
+}
+.accessibility-font-size {
+    font-size: var(--accessibility-font-size);
+}
+.accessibility-line-height {
+    line-height: var(--accessibility-line-height);
+}
+.accessibility-letter-spacing {
+    letter-spacing: var(--accessibility-letter-spacing);
+}
+/* Text Alignment */
+html.align-left,
+html.align-left body,
+html.align-left body *:not(#accessPanel):not(#accessPanel *):not(script):not(style):not(img):not(svg):not(video):not(canvas):not(iframe):not(object):not(embed) {
+    text-align: left !important;
+}
+html.align-center,
+html.align-center body,
+html.align-center body *:not(#accessPanel):not(#accessPanel *):not(script):not(style):not(img):not(svg):not(video):not(canvas):not(iframe):not(object):not(embed) {
+    text-align: center !important;
+}
+html.align-right,
+html.align-right body,
+html.align-right body *:not(#accessPanel):not(#accessPanel *):not(script):not(style):not(img):not(svg):not(video):not(canvas):not(iframe):not(object):not(embed) {
+    text-align: right !important;
+}
+html.align-left #accessPanel, html.align-center #accessPanel, html.align-right #accessPanel {
+    text-align: initial !important;
+}
+/* Accessibility Modes */
+body.dark-contrast {
+    background: #000 !important;
+    color: #fff !important;
+}
+body.light-contrast {
+    background-color: #f5f5f5 !important;
+    color: #333 !important;
+}
+body.high-contrast {
+    background-color: #000 !important;
+    color: #FFD700 !important;
+}
+/* Filters applied to html element */
+html.low-saturation {
+    filter: saturate(50%);
+}
+html.monochrome {
+    filter: grayscale(100%);
+}
+html.high-saturation {
+    filter: saturate(150%);
+}
+.reading-mask-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    pointer-events: none;
+    z-index: 9999;
+    transition: clip-path 0.1s ease-out;
+}
+.reading-guide-line {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 500px;
+    height: 13px;
+    border-radius: 50px;
+    background-color: #146ff8;
+    border: solid 4px #1f2533;
+    pointer-events: none;
+    z-index: 2147483647;
+    transition: top 0.1s ease-out;
+}
+/* Big Black Cursor */
+body.big-black-cursor * {
+    cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PHBhdGggZD0ibTI3LjQgMjYuNSA5LjIgMTguMy03LjkgMy45LTkuMi0xOC4zLTkuMyA4LjZWMi4zbDI5LjggMjItMTIuNiAyLjJ6IiBzdHlsZT0ic3Ryb2tlOiNmZmY7c3Ryb2tlLXdpZHRoOjI7c3Ryb2tlLW1pdGVybGltaXQ6MTA7dHJhbnNmb3JtOnNjYWxlKC42NCkiLz48L3N2Zz4=') 0 0, auto !important;
+}
+/* Black Pointer Cursor for pointer elements */
+body.big-black-cursor a,
+body.big-black-cursor button,
+body.big-black-cursor [role="button"],
+body.big-black-cursor input[type="button"],
+body.big-black-cursor input[type="submit"],
+body.big-black-cursor label,
+body.big-black-cursor select,
+body.big-black-cursor textarea,
+body.big-black-cursor [onclick],
+body.big-black-cursor [tabindex]:not([tabindex="-1"]),
+body.big-black-cursor .action-box:not(.full-width) * {
+    cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PHBhdGggZD0iTTQzLjQgMjEuM2MwLS4yLS4xLTEuNS0xLjMtMi44LTEuMi0xLjQtMy4yLTIuMS01LjctMi4zLS4yLS40LS42LS44LTEuMS0xLjEtMS40LTEtMy43LTEuNi02LjUtMS43LS4yLS4zLS43LS43LTEuMi0xLTEuMy0uOS0yLjktMS40LTQuOS0xLjZ2LTVjMC0uNSAwLTIuNi0xLjQtNC4xLS43LS43LTEuOS0xLjUtNC0xLjVzLTMuNC44LTQuMSAxLjVjLTEuNCAxLjQtMS40IDMuMy0xLjQgMy44djE3LjljLTEuMi0xLjItMi42LTIuNi0zLjQtMy4xLTEuNi0xLjItNC43LS42LTYuNS43LTEuNyAxLjItMi4zIDMtMS42IDQuOCAxLjIgMy4xIDQuMSA2LjMgNC44IDcgLjcgMS4yIDMuNiA2LjQgNi4yIDguMyAxLjQgMSAyLjQgNS4xIDIuNyA3LjhsLjEgMS40aDI0LjZ2LTYuMmMuMy0uOSAxLjEtMi44IDItMy42IDItMiAyLjctNi45IDIuNy04LjNWMjEuM3oiIHN0eWxlPSJzdHJva2U6I2ZmZjtzdHJva2Utd2lkdGg6MjtzdHJva2UtbWl0ZXJsaW1pdDoxMDt0cmFuc2Zvcm06c2NhbGUoLjY0KSIvPjwvc3ZnPg==') 0 0, pointer !important;
+}
+
+/* Big White Cursor */
+body.big-white-cursor * {
+    cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PHBhdGggZD0ibTI3LjMgMjYuMyA5LjIgMTguNC04IDMuOS05LjItMTguNC05LjIgOC43VjJMNDAgMjQuMWwtMTIuNyAyLjJ6IiBzdHlsZT0iZmlsbDojZmZmIWltcG9ydGFudDtzdHJva2U6IzAwMDtzdHJva2Utd2lkdGg6MjtzdHJva2UtbWl0ZXJsaW1pdDoxMDt0cmFuc2Zvcm06c2NhbGUoLjY0KSIvPjwvc3ZnPg==') 0 0, auto !important;
+}
+/* White Pointer Cursor for pointer elements */
+body.big-white-cursor a,
+body.big-white-cursor button,
+body.big-white-cursor [role="button"],
+body.big-white-cursor input[type="button"],
+body.big-white-cursor input[type="submit"],
+body.big-white-cursor label,
+body.big-white-cursor select,
+body.big-white-cursor textarea,
+body.big-white-cursor [onclick],
+body.big-white-cursor [tabindex]:not([tabindex="-1"]),
+body.big-white-cursor .action-box:not(.full-width) * {
+    cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PHBhdGggZD0iTTQ1LjQgMTguNWMtMS4yLTEuNC0zLjItMi4xLTUuNy0yLjMtLjItLjQtLjYtLjgtMS4xLTEuMS0xLjQtMS0zLjctMS42LTYuNS0xLjctLjItLjMtLjctLjctMS4yLTEtMS4zLS45LTIuOS0xLjQtNC45LTEuNnYtNWMwLS41IDAtMi42LTEuNC00LjEtLjctLjctMS45LTEuNS00LTEuNXMtMy40LjgtNC4xIDEuNWMtMS40IDEuNC0xLjQgMy4zLTEuNCAzLjh2MTcuOWMtMS4yLTEuMi0yLjYtMi42LTMuNC0zLjEtMS42LTEuMi00LjctLjYtNi41LjctMS43IDEuMi0yLjMgMy0xLjYgNC44IDEuMiAzLjEgNC4xIDYuMyA0LjggNyAuNyAxLjIgMy42IDYuNCA2LjIgOC4zIDEuNCAxIDIuNCA1LjEgMi43IDcuOGwuMSAxLjRINDJ2LTYuMmMuMy0uOSAxLjEtMi44IDItMy42IDItMiAyLjctNi45IDIuNy04LjNWMjEuM2MwLS4yLS4xLTEuNS0xLjMtMi44eiIgc3R5bGU9ImZpbGw6I2ZmZiFpbXBvcnRhbnQ7c3Ryb2tlOiMwMDA7c3Ryb2tlLXdpZHRoOjI7c3Ryb2tlLW1pdGVybGltaXQ6MTA7dHJhbnNmb3JtOnNjYWxlKC42NCkiLz48L3N2Zz4=') 0 0, pointer !important;
+}
+/* Hide Image */
+html.hide-images img,
+html.hide-images video,
+html.hide-images .preloader {
+    visibility: hidden !important;
+}
+
+/* Stop Animation */
+.stop-animation *,
+.stop-animation *::before,
+.stop-animation *::after {
+    animation: none !important;
+    transition: none !important;
+}
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+.test-animation-box {
+    width: 100%;
+    height: 50px;
+    animation: pulse 2s infinite ease-in-out;
+    border-radius: 8px;
+}
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 500px;
+}
+video.is-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+body > .skiptranslate, .goog-logo-link, .gskiptranslate, .goog-te-gadget span, .goog-te-banner-frame, #goog-gt-tt, .goog-te-balloon-frame, div#goog-gt-tt {
+    display: none !important;
+    z-index: -1 !important;
+}
+/*.goog-te-gadget {
+    color: transparent !important;
+    font-size: 0 !important;
+}
+.goog-text-highlight {
+    background: transparent !important;
+    box-shadow: transparent !important;
+}*/
+.goog-te-gadget {
+    color: transparent !important;
+    font-size: 0 !important;
+}
+.goog-te-gadget span, .goog-te-gadget a {
+    display: none !important;
+}
+.goog-text-highlight {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+body {
+    top: 0 !important;
+    overflow-x: hidden;
+}
+html, body {
+    height: auto !important;
+    overflow-y: visible !important;
+}
+.goog-te-banner-frame {
+    display: none !important;
+}
+html.hndcursor * {
+    cursor: url("../images/handtalkcursor.svg"), auto !important;
+}
+.hndcursor {
+    cursor: url("../images/handtalkcursor.svg"), auto !important;
+}
+.card h1,
+.card h2,
+.card h3,
+.card h4,
+.card h5,
+.card h6,
+.card p,
+.card .badge,
+.card .small,
+.card .fw-bold,
+.card .fw-bolder,
+.card .text-muted {
+    position: relative;
+    z-index: 2;
+}
+.card-body > * {
+    position: relative;
+    z-index: 2;
+}
+#asl-tooltip {
+    position: fixed;
+    line-height: 1.4;
+    padding: 12px 18px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    border-radius: 8px;
+    color: #fff;
+    background-color: rgba(0,0,0,0.9);
+    pointer-events: none;
+    user-select: none;
+    z-index: 9999;
+    display: none;
+    max-width: 800px;
+}
+#asl-tooltip .asl-line {
+    display: flex;
+    gap: 2px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.asl-box {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    margin: 0 1px;
+    padding: 0;
+    line-height: 1;
+}
+.asl-box[class*="asl-"]::before {
+    content: "";
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: middle;
+}
+.asl-box.fallback {
+    width: 10px;
+    height: 80px;
+    font-size: 28px;
+    text-align: center;
+    color: #fff;
+    background: transparent;
+    flex-shrink: 0;
+}
+.asl-box:not([class*="asl-"]) {
+    width: auto !important;
+    height: auto !important;
+    font-size: 22px;
+    line-height: 1;
+    color: #fff;
+    background: transparent;
+    margin: 0 2px;
+    padding: 0;
+    user-select: none;
+}
+.asl-box.asl-halant {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    display: inline-block;
+}
+.asl-box.asl-halant {
+    font-size: 8px;
+    line-height: 1;
+    opacity: 0.5;
+}
+/* ASL letter styles */
+.asl-a::before {
+    background-image: url(../images/Aa.png);
+}
+.asl-b::before {
+    background-image: url(../images/Bb.png);
+}
+.asl-c::before {
+    background-image: url(../images/Cc.png);
+}
+.asl-d::before {
+    background-image: url(../images/Dd.png);
+}
+.asl-e::before {
+    background-image: url(../images/Ee.png);
+}
+.asl-f::before {
+    background-image: url(../images/Ff.png);
+}
+.asl-g::before {
+    background-image: url(../images/Gg.png);
+}
+.asl-h::before {
+    background-image: url(../images/Hh.png);
+}
+.asl-i::before {
+    background-image: url(../images/Ii.png);
+}
+.asl-j::before {
+    background-image: url(../images/Jj.png);
+}
+.asl-k::before {
+    background-image: url(../images/Kk.png);
+}
+.asl-l::before {
+    background-image: url(../images/Ll.png);
+}
+.asl-m::before {
+    background-image: url(../images/Mm.png);
+}
+.asl-n::before {
+    background-image: url(../images/Nn.png);
+}
+.asl-o::before {
+    background-image: url(../images/Oo.png);
+}
+.asl-p::before {
+    background-image: url(../images/Pp.png);
+}
+.asl-q::before {
+    background-image: url(../images/Qq.png);
+}
+.asl-r::before {
+    background-image: url(../images/Rr.png);
+}
+.asl-s::before {
+    background-image: url(../images/Ss.png);
+}
+.asl-t::before {
+    background-image: url(../images/Tt.png);
+}
+.asl-u::before {
+    background-image: url(../images/Uu.png);
+}
+.asl-v::before {
+    background-image: url(../images/Vv.png);
+}
+.asl-w::before {
+    background-image: url(../images/Ww.png);
+}
+.asl-x::before {
+    background-image: url(../images/Xx.png);
+}
+.asl-y::before {
+    background-image: url(../images/Yy.png);
+}
+.asl-z::before {
+    background-image: url(../images/Zz.png);
+}
+.asl-0::before {
+    background-image: url(../images/Zero.png);
+}
+.asl-1::before {
+    background-image: url(../images/One.png);
+}
+.asl-2::before {
+    background-image: url(../images/Two.png);
+}
+.asl-3::before {
+    background-image: url(../images/Three.png);
+}
+.asl-4::before {
+    background-image: url(../images/Four.png);
+}
+.asl-5::before {
+    background-image: url(../images/Five.png);
+}
+.asl-6::before {
+    background-image: url(../images/Six.png);
+}
+.asl-7::before {
+    background-image: url(../images/Seven.png);
+}
+.asl-8::before {
+    background-image: url(../images/Eight.png);
+}
+.asl-9::before {
+    background-image: url(../images/Nine.png);
+}
+.asl-০::before {
+    background-image: url(../images/Banshonno.png);
+}
+.asl-১::before {
+    background-image: url(../images/Banek.png);
+}
+.asl-২::before {
+    background-image: url(../images/Bandui.png);
+}
+.asl-৩::before {
+    background-image: url(../images/Banteen.png);
+}
+.asl-৪::before {
+    background-image: url(../images/Banchar.png);
+}
+.asl-৫::before {
+    background-image: url(../images/Banpanch.png);
+}
+.asl-৬::before {
+    background-image: url(../images/Banchoy.png);
+}
+.asl-৭::before {
+    background-image: url(../images/Banshat.png);
+}
+.asl-৮::before {
+    background-image: url(../images/Banaat.png);
+}
+.asl-৯::before {
+    background-image: url(../images/Bannoy.png);
+}
+.asl-অ::before,
+.asl-য়::before {
+    background-image: url(../images/Banau.png);
+}
+.asl-আ::before,
+.asl-া::before {
+    background-image: url(../images/Banau.png);
+}
+.asl-ই::before,
+.asl-ঈ::before,
+.asl-ি::before,
+.asl-ী::before {
+    background-image: url(../images/Bane.png);
+}
+.asl-উ::before,
+.asl-ঊ::before,
+.asl-ু::before,
+.asl-ূ::before {
+    background-image: url(../images/Banuu.png);
+}
+.asl-ঋ::before,
+.asl-ড়::before,
+.asl-ঢ়::before,
+.asl-ৃ::before,
+.asl-র::before {
+    background-image: url(../images/Banree.png);
+}
+.asl-এ::before,
+.asl-ে::before {
+    background-image: url(../images/Banay.png);
+}
+.asl-ঐ::before,
+.asl-ৈ::before {
+    background-image: url(../images/Banoi.png);
+}
+.asl-ও::before,
+.asl-ো::before {
+    background-image: url(../images/Bano.png);
+}
+.asl-ঔ::before,
+.asl-ৌ::before {
+    background-image: url(../images/Banou.png);
+}
+.asl-ঔ::before,
+.asl-ৌ::before {
+    background-image: url(../images/Banou.png);
+}
+.asl-ক::before {
+    background-image: url(../images/Banka.png);
+}
+.asl-খ::before {
+    background-image: url(../images/Bankha.png);
+}
+.asl-গ::before {
+    background-image: url(../images/Banga.png);
+}
+.asl-ঘ::before {
+    background-image: url(../images/Bangha.png);
+}
+.asl-ঙ::before {
+    background-image: url(../images/Banuon.png);
+}
+.asl-চ::before {
+    background-image: url(../images/Bancha.png);
+}
+.asl-ছ::before {
+    background-image: url(../images/Banchau.png);
+}
+.asl-জ::before,
+.asl-য::before {
+    background-image: url(../images/Banja.png);
+}
+.asl-ঝ::before {
+    background-image: url(../images/Banjha.png);
+}
+.asl-ঞ::before {
+    background-image: url(../images/Baneoon.png);
+}
+.asl-ট::before {
+    background-image: url(../images/Bantau.png);
+}
+.asl-ঠ::before {
+    background-image: url(../images/Bantha.png);
+}
+.asl-ড::before {
+    background-image: url(../images/Banda.png);
+}
+.asl-ঢ::before {
+    background-image: url(../images/Bandha.png);
+}
+.asl-ণ::before,
+.asl-ন::before {
+    background-image: url(../images/Bannau.png);
+}
+.asl-ত::before,
+.asl-ৎ::before {
+    background-image: url(../images/Banta.png);
+}
+.asl-থ::before {
+    background-image: url(../images/Banthau.png);
+}
+.asl-দ::before {
+    background-image: url(../images/Bandau.png);
+}
+.asl-ধ::before {
+    background-image: url(../images/Bandhau.png);
+}
+.asl-প::before {
+    background-image: url(../images/Banpa.png);
+}
+.asl-ফ::before {
+    background-image: url(../images/Banfau.png);
+}
+.asl-ব::before,
+.asl-ভ::before {
+    background-image: url(../images/Banba.png);
+}
+.asl-ম::before {
+    background-image: url(../images/Banma.png);
+}
+.asl-ল::before {
+    background-image: url(../images/Banla.png);
+}
+.asl-স::before,
+.asl-শ::before,
+.asl-ষ::before {
+    background-image: url(../images/Bansha.png);
+}
+.asl-হ::before {
+    background-image: url(../images/Banha.png);
+}
+.asl-ং::before {
+    background-image: url(../images/Banonshor.png);
+}
+.asl-ঃ::before {
+    background-image: url(../images/Banbishorgo.png);
+}
+.asl-ঁ::before {
+    background-image: url(../images/Banchandrabindu.png);
+}

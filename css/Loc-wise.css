@@ -1,0 +1,72 @@
+﻿.map-preview svg {
+    height: 610px;
+    width: 100%;
+    text-align: center;
+}
+.map-preview svg g {
+    cursor: pointer;
+}
+.map-preview h5 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 0px;
+    cursor: pointer;
+}
+#states *.on {
+    fill: #360;
+}
+.divst-of-states > div,
+.divst-of-cities > div,
+.divst-of-ostates > div {
+    display: inline-block;
+    margin: 2px 2px;
+    cursor: pointer;
+    color: #360;
+}
+#city *.on {
+    fill: #f00;
+}
+#ostates *.on {
+    fill: #360;
+}
+#school *.on {
+    fill: #08326e;
+}
+.school .divtm {
+    color: #08326e;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-block;
+}
+#states .sca-district.on {
+    fill: #7139ff;
+}
+#map-tip {
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    display: none;
+    padding: 3px;
+    color: #ffcc00;
+    z-index: 1000;
+    float: left;
+    position: absolute;
+    border: 2px solid #006600;
+    border-radius: 6px;
+    background-color: rgba(0, 26, 0, 0.5);
+    word-break: break-all;
+    white-space: pre-wrap !important;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.5);
+}
+#map-tip p {
+    margin: 0 !important;
+}
+#map-tip img {
+    float: left;
+    padding: 3px;
+}
+@media (max-width: 768px) {
+    .map-preview svg {
+        height: 400px;
+    }
+}
